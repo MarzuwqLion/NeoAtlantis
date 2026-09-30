@@ -1,0 +1,66 @@
+// Keyboard-driven check of the menu flow and screens.
+import { chromium } from 'playwright';
+
+const url = process.env.URL ?? 'http://localhost:4173/';
+const out = process.argv[2] ?? 'shots';
+const browser = await chromium.launch({ channel: 'chrome', headless: true, args: ['--enable-gpu', '--ignore-gpu-blocklist', '--use-angle=d3d11'] });
+const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+const errs = [];
+page.on('pageerror', (e) => errs.push(e.message));
+page.on('console', (m) => { if (m.type() === 'error') errs.push(m.text()); });
+await page.goto(url);
+await page.waitForFunction(() => window.__game, null, { timeout: 60000 });
+await page.waitForTimeout(1200);
+const state = () => page.evaluate(() => window.__game.state());
+const key = async (k, hold = 80) => {
+  await page.keyboard.down(k);
+  await page.waitForTimeout(hold);
+  await page.keyboard.up(k);
+  await page.waitForTimeout(250);
+};
+await key('KeyJ');
+console.log('after any key:', await state());
+await key('ArrowDown');
+await key('Enter');
+console.log('controls:', await state());
+await page.screenshot({ path: `${out}/m_controls.png` });
+await key('Escape');
+console.log('back (cursor stays on CONTROLS):', await state());
+await key('ArrowUp');
+await key('Enter');
+await page.waitForTimeout(1500);
+console.log('start:', await state());
+// walk right and punch a bit with the keyboard
+await page.keyboard.down('ArrowRight');
+await page.waitForTimeout(1800);
+await page.keyboard.up('ArrowRight');
+for (let i = 0; i < 6; i++) await key('KeyJ', 40);
+await key('KeyK');
+await page.waitForTimeout(500);
+const p = await page.evaluate(() => { const w = window.__game.world(); const f = w.fighters.find((x) => x.player === 0); return { x: f.x.toFixed(2), state: f.state }; });
+console.log('player after keyboard input:', JSON.stringify(p));
+await key('Enter');
+console.log('pause:', await state());
+await page.screenshot({ path: `${out}/m_pause.png` });
+await key('ArrowDown');
+await key('ArrowDown');
+await key('Enter');
+console.log('pause->controls:', await state());
+await key('Escape');
+console.log('back to pause:', await state());
+await key('Escape');
+console.log('resume via back:', await state());
+// Force a game over: one life, 1 HP, then walk into the first fight and let the grunts win.
+await page.evaluate(() => { const w = window.__game.world(); w.players[0].lives = 1; const f = w.fighters.find((x) => x.player === 0); f.hp = 1; });
+await page.keyboard.down('ArrowRight');
+await page.waitForTimeout(4000);
+await page.keyboard.up('ArrowRight');
+for (let i = 0; i < 120 && (await state()) === 'playing'; i++) await page.waitForTimeout(250);
+console.log('after death:', await state());
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/m_gameover.png` });
+await key('Enter');
+await page.waitForTimeout(1500);
+console.log('continue:', await state(), JSON.stringify(await page.evaluate(() => ({ lives: window.__game.world().players[0].lives, continues: window.__game.world().players[0].continues }))));
+console.log('errors:', errs.length ? errs : 'none');
+await browser.close();

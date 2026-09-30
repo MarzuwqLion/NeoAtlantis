@@ -1,0 +1,71 @@
+/* Neo Atlantis — UI overlay. Everything is sized from --u (1% of the game height). */
+:root {
+  --u: 7.2px;
+  --gold: #e8b64c;
+  --gold-hi: #ffe39a;
+  --lapis: #1f4f9a;
+  --teal: #29b3a8;
+  --cyan: #6ff4ff;
+  --red: #e0413a;
+  --ink: #06080d;
+  --panel: rgba(6, 10, 18, 0.72);
+  --font: 'Trebuchet MS', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Copperplate', 'Copperplate Gothic Bold', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  color: #f4ecd8;
+  font-family: var(--font);
+  -webkit-user-select: none;
+  user-select: none;
+}
+#app {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  background: #000;
+}
+#game {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+#ui * { pointer-events: none; }
+#ui .interactive, #ui .interactive * { pointer-events: auto; }
+
+/* ---- Animation viewer ---------------------------------------------------- */
+.viewer-ui {
+  position: absolute;
+  left: calc(var(--u) * 1.5);
+  top: calc(var(--u) * 1.5);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(8, 12, 20, 0.85);
+  border: 1px solid rgba(232, 182, 76, 0.5);
+  border-radius: 6px;
+  font: 12px/1.3 var(--font);
+  color: #e8dcc0;
+  pointer-events: auto !important;
+  z-index: 20;
+  min-width: 250px;
+}
+.viewer-ui * { pointer-events: auto !important; }
+.viewer-ui label { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.viewer-ui select, .viewer-ui input { flex: 1; max-width: 160px; }
+.viewer-ui button { background: #2a2418; color: #f0d890; border: 1px solid #806030; border-radius: 4px; padding: 3px 8px; cursor: pointer; }
+.viewer-info { color: #9ec8e0; font-size: 11px; }

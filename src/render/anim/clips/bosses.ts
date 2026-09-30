@@ -1,0 +1,343 @@
+/**
+ * Boss clip sets: SOBEKHAN (heavy, armoured wind-ups) and APEP (fast twin
+ * blades). Phase-2 APEP moves reuse these clips with tighter frame data, so
+ * they automatically play faster.
+ */
+import type { ClipSpec, PoseSpec } from '../pose';
+import { k, LYING } from './humanoid';
+
+// ---------------------------------------------------------------------------
+// SOBEKHAN
+// ---------------------------------------------------------------------------
+const MB_STANCE: PoseSpec = {
+  pos: [0, -0.08, 0],
+  hips: [4, -8, 0],
+  spine: [16, 0, 0],
+  chest: [10, 0, 0],
+  neck: [-20, 0, 0],
+  head: [-8, 0, 0],
+  shoulderL: [0, 0, 8],
+  shoulderR: [0, 0, -8],
+  upperArmL: [-24, 0, 24],
+  lowerArmL: [-46, 0, 0],
+  handL: [0, 0, 0],
+  upperArmR: [-20, 0, -24],
+  lowerArmR: [-50, 0, 0],
+  handR: [0, 0, 0],
+  upperLegL: [-16, 14, 12],
+  lowerLegL: [22, 0, 0],
+  footL: [0, -12, 0],
+  upperLegR: [10, -14, -12],
+  lowerLegR: [16, 0, 0],
+  footR: [4, 12, 0],
+};
+
+export const SOBEKHAN_CLIPS: Record<string, ClipSpec> = {
+  idle: {
+    mode: 'loop',
+    length: 120,
+    base: MB_STANCE,
+    blend: 10,
+    keys: [k(0, {}), k(0.5, { pos: [0, -0.11, 0], spine: [18, 0, 0], chest: [13, 0, 0], shoulderL: [0, 0, 12], shoulderR: [0, 0, -12], upperArmL: [-20, 0, 26], upperArmR: [-16, 0, -26], head: [-4, 6, 0] })],
+  },
+  walk: {
+    mode: 'stride',
+    length: 1.4,
+    base: MB_STANCE,
+    blend: 8,
+    keys: [
+      k(0, { pos: [0, -0.13, 0], hips: [4, -2, 6], chest: [10, 8, -4], upperLegL: [-28, 12, 12], lowerLegL: [16, 0, 0], footL: [-8, 0, 0], upperLegR: [16, -12, -12], lowerLegR: [20, 0, 0], footR: [12, 0, 0], upperArmL: [-8, 0, 26], upperArmR: [-34, 0, -26] }),
+      k(0.25, { pos: [0, -0.04, 0], hips: [4, -8, 0], upperLegL: [-4, 12, 12], lowerLegL: [8, 0, 0], upperLegR: [-24, -12, -12], lowerLegR: [60, 0, 0] }),
+      k(0.5, { pos: [0, -0.13, 0], hips: [4, -14, -6], chest: [10, -8, 4], upperLegR: [-28, -12, -12], lowerLegR: [16, 0, 0], footR: [-8, 0, 0], upperLegL: [16, 12, 12], lowerLegL: [20, 0, 0], footL: [12, 0, 0], upperArmL: [-34, 0, 26], upperArmR: [-8, 0, -26] }),
+      k(0.75, { pos: [0, -0.04, 0], hips: [4, -8, 0], upperLegR: [-4, -12, -12], lowerLegR: [8, 0, 0], upperLegL: [-24, 12, 12], lowerLegL: [60, 0, 0] }),
+    ],
+  },
+  mb_intro: {
+    mode: 'norm',
+    base: MB_STANCE,
+    blend: 1,
+    keys: [
+      k(0, { pos: [0, 0.1, 0], hips: [10, 0, 0], spine: [10, 0, 0], upperLegL: [-50, 12, 12], lowerLegL: [80, 0, 0], upperLegR: [-30, -12, -12], lowerLegR: [90, 0, 0], upperArmL: [-150, 0, 40], lowerArmL: [-30, 0, 0], upperArmR: [-150, 0, -40], lowerArmR: [-30, 0, 0] }),
+      k(0.2, { upperLegL: [-20, 12, 12], lowerLegL: [30, 0, 0], upperLegR: [-10, -12, -12], lowerLegR: [30, 0, 0] }, 'in'),
+      k(0.23, { pos: [0, -0.4, 0.06], sq: 0.84, hips: [20, 0, 0], spine: [34, 0, 0], chest: [10, 0, 0], neck: [-10, 0, 0], upperLegL: [-70, 12, 12], lowerLegL: [110, 0, 0], upperLegR: [10, -12, -12], lowerLegR: [110, 0, 0], footR: [30, 0, 0], upperArmR: [-54, 0, -10], lowerArmR: [-10, 0, 0], upperArmL: [-10, 0, 50], lowerArmL: [-20, 0, 0] }, 'snap'),
+      k(0.4, { pos: [0, -0.34, 0.04], sq: 1, head: [-16, 10, 0] }),
+      k(0.55, { pos: [0, -0.06, 0], hips: [-4, -8, 0], spine: [-6, 0, 0], chest: [-18, 0, 0], neck: [-20, 0, 0], head: [-28, 0, 0], upperLegL: [-16, 14, 12], lowerLegL: [22, 0, 0], upperLegR: [10, -14, -12], lowerLegR: [16, 0, 0], footR: [4, 12, 0], upperArmL: [-60, 0, 84], lowerArmL: [-60, 0, 0], upperArmR: [-60, 0, -84], lowerArmR: [-60, 0, 0] }),
+      k(0.7, { chest: [-22, 0, 0], head: [-34, 0, 0], upperArmL: [-70, 0, 90], upperArmR: [-70, 0, -90] }),
+      k(0.78, { pos: [0, -0.1, 0.04], chest: [12, 0, 0], head: [0, 0, 0], upperArmL: [-78, 0, -20], lowerArmL: [-80, 0, 0], upperArmR: [-78, 0, 20], lowerArmR: [-80, 0, 0] }, 'snap'),
+      k(0.86, { upperArmL: [-60, 0, 30], upperArmR: [-60, 0, -30] }),
+      k(0.92, { upperArmL: [-78, 0, -20], upperArmR: [-78, 0, 20] }, 'snap'),
+      k(1, { ...MB_STANCE }),
+    ],
+  },
+  mb_charge: {
+    mode: 'move',
+    base: MB_STANCE,
+    blend: 4,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 0.25], { pos: [0, -0.2, -0.08], hips: [16, 10, 0], spine: [40, 0, 0], chest: [14, 0, 0], neck: [-40, 0, 0], head: [-10, 0, 0], shoulderL: [0, 0, 16], shoulderR: [0, 0, -16], upperArmL: [30, 0, 30], upperArmR: [30, 0, -30], lowerArmL: [-30, 0, 0], lowerArmR: [-30, 0, 0] }, 'out'),
+      k(['S', 0.4], { upperLegR: [-40, -14, -12], lowerLegR: [70, 0, 0] }, 'out'),
+      k(['S', 0.55], { upperLegR: [16, -14, -12], lowerLegR: [10, 0, 0], footR: [20, 0, 0] }, 'in'),
+      k(['S', 0.7], { upperLegR: [-40, -14, -12], lowerLegR: [70, 0, 0] }, 'out'),
+      k(['S', 0.85], { upperLegR: [18, -14, -12], lowerLegR: [10, 0, 0] }, 'in'),
+      k(['S', 1], { pos: [0, -0.26, -0.1], hips: [20, 20, 0], spine: [46, 6, 0], upperLegL: [-50, 14, 12], lowerLegL: [80, 0, 0], upperLegR: [30, -14, -12], lowerLegR: [40, 0, 0], footR: [30, 0, 0] }),
+      k(['A', 1], { pos: [0, -0.2, 0.06] }),
+      k(['R', 0.12], { pos: [0, -0.02, -0.16], hips: [-12, 0, 0], spine: [-18, 0, 0], chest: [-12, 0, 0], neck: [-6, 0, 0], head: [-30, 12, 10], upperArmL: [-70, 0, 60], lowerArmL: [-30, 0, 0], upperArmR: [-60, 0, -60], lowerArmR: [-30, 0, 0], upperLegL: [-34, 14, 12], lowerLegL: [20, 0, 0], upperLegR: [22, -14, -12], lowerLegR: [10, 0, 0] }, 'snap'),
+      k(['R', 0.35], { pos: [0, -0.2, -0.1], spine: [30, 0, 0], chest: [10, 0, 0], head: [10, -20, -10], upperArmL: [-30, 0, 30], upperArmR: [-20, 0, -30] }),
+      k(['R', 0.55], { head: [-10, 20, 10], spine: [26, 6, 6] }),
+      k(['R', 0.75], { head: [4, -16, -8], spine: [22, -6, -6] }),
+      k(['R', 1], { ...MB_STANCE }),
+    ],
+  },
+  mb_charge_loop: {
+    mode: 'loop',
+    length: 22,
+    base: MB_STANCE,
+    blend: 3,
+    keys: [
+      k(0, { pos: [0, -0.2, 0.08], hips: [18, 18, 0], spine: [44, 6, 0], chest: [14, 8, 0], neck: [-40, 0, 0], shoulderR: [0, 14, -12], upperArmR: [-20, 0, -10], lowerArmR: [-80, 0, 0], upperArmL: [30, 0, 30], lowerArmL: [-50, 0, 0], upperLegL: [-64, 12, 8], lowerLegL: [44, 0, 0], upperLegR: [40, -12, -8], lowerLegR: [80, 0, 0], footR: [40, 0, 0] }),
+      k(0.5, { pos: [0, -0.12, 0.08], upperLegR: [-64, -12, -8], lowerLegR: [44, 0, 0], footR: [0, 0, 0], upperLegL: [40, 12, 8], lowerLegL: [80, 0, 0], footL: [40, 0, 0] }),
+    ],
+  },
+  mb_slam: {
+    mode: 'move',
+    base: MB_STANCE,
+    blend: 3,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 0.8], { pos: [0, 0.04, -0.08], hips: [-6, 0, 0], spine: [-18, 0, 0], chest: [-14, 0, 0], neck: [-10, 0, 0], head: [-24, 0, 0], shoulderL: [0, 0, 24], shoulderR: [0, 0, -24], upperArmL: [-172, 0, -8], lowerArmL: [-50, 0, 0], upperArmR: [-172, 0, 8], lowerArmR: [-50, 0, 0], upperLegL: [-20, 14, 12], lowerLegL: [14, 0, 0] }, 'out'),
+      k(['S', 1], { pos: [0, 0.06, -0.09], spine: [-20, 0, 0], upperArmL: [-178, 0, -8], upperArmR: [-178, 0, 8] }, 'linear'),
+      k(['A', 0.3], { pos: [0, -0.4, 0.14], sq: 0.86, hips: [16, 0, 0], spine: [50, 0, 0], chest: [20, 0, 0], neck: [-30, 0, 0], head: [10, 0, 0], shoulderL: [0, 0, 0], shoulderR: [0, 0, 0], upperArmL: [-50, 0, -6], lowerArmL: [-6, 0, 0], upperArmR: [-50, 0, 6], lowerArmR: [-6, 0, 0], upperLegL: [-70, 14, 12], lowerLegL: [110, 0, 0], upperLegR: [16, -14, -12], lowerLegR: [100, 0, 0], footR: [30, 0, 0] }, 'snap'),
+      k(['A', 1], { pos: [0, -0.42, 0.14], sq: 1 }, 'out'),
+      k(['R', 0.55], { pos: [0, -0.38, 0.12], spine: [46, 0, 0], head: [0, 10, 0] }),
+      k(['R', 1], { ...MB_STANCE }),
+    ],
+  },
+  mb_sweep: {
+    mode: 'move',
+    base: MB_STANCE,
+    blend: 3,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 0.9], { pos: [0, -0.16, -0.06], hips: [6, -50, 0], spine: [20, -30, 0], chest: [10, -30, 0], head: [-6, 40, 0], upperArmR: [-70, 0, -90], lowerArmR: [-20, 0, 0], upperArmL: [-40, 0, 50], lowerArmL: [-40, 0, 0], upperLegL: [-30, 14, 12], lowerLegL: [50, 0, 0], upperLegR: [16, -14, -12], lowerLegR: [40, 0, 0] }, 'out'),
+      k(['S', 1], { hips: [6, -54, 0], chest: [10, -34, 0] }, 'linear'),
+      k(['A', 0.35], { pos: [0, -0.2, 0.1], hips: [6, 16, 0], spine: [24, 20, 0], chest: [12, 30, 0], head: [-4, -10, 0], upperArmR: [-88, 0, 30], lowerArmR: [-4, 0, 0] }, 'snap'),
+      k(['A', 1], { hips: [6, 40, 0], chest: [12, 44, 0], upperArmR: [-84, 0, 70] }, 'linear'),
+      k(['R', 0.3], { hips: [6, 46, 0], chest: [10, 48, 0], upperArmR: [-60, 0, 80], lowerArmR: [-30, 0, 0] }, 'out'),
+      k(['R', 1], { ...MB_STANCE }),
+    ],
+  },
+  mb_roar: {
+    mode: 'move',
+    base: MB_STANCE,
+    blend: 4,
+    keys: [
+      k(['R', 0], {}),
+      k(['R', 0.15], { pos: [0, -0.2, 0], spine: [34, 0, 0], chest: [20, 0, 0], head: [10, 0, 0], upperArmL: [-40, 0, 10], lowerArmL: [-100, 0, 0], upperArmR: [-40, 0, -10], lowerArmR: [-100, 0, 0] }, 'out'),
+      k(['R', 0.3], { pos: [0, -0.02, 0], hips: [-6, -8, 0], spine: [-10, 0, 0], chest: [-24, 0, 0], neck: [-24, 0, 0], head: [-36, 0, 0], upperArmL: [-80, 0, 90], lowerArmL: [-70, 0, 0], upperArmR: [-80, 0, -90], lowerArmR: [-70, 0, 0] }, 'snap'),
+      k(['R', 0.6], { chest: [-26, 0, 0], head: [-38, 4, 0], upperArmL: [-84, 0, 94], upperArmR: [-84, 0, -94] }),
+      k(['R', 0.7], { chest: [10, 0, 0], head: [0, 0, 0], upperArmL: [-70, 0, -30], lowerArmL: [-90, 0, 0], upperArmR: [-70, 0, 30], lowerArmR: [-90, 0, 0] }, 'snap'),
+      k(['R', 0.78], { upperArmL: [-60, 0, 20], upperArmR: [-60, 0, -20] }),
+      k(['R', 0.86], { upperArmL: [-70, 0, -30], upperArmR: [-70, 0, 30] }, 'snap'),
+      k(['R', 1], { ...MB_STANCE }),
+    ],
+  },
+  mb_shove: {
+    mode: 'move',
+    base: MB_STANCE,
+    blend: 2,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 1], { pos: [0, -0.16, -0.08], hips: [8, -30, 0], spine: [20, -20, 0], shoulderR: [0, -10, -10], upperArmR: [-40, 0, -20], lowerArmR: [-110, 0, 0], upperArmL: [-40, 0, 20], lowerArmL: [-110, 0, 0] }, 'in'),
+      k(['A', 0.4], { pos: [0, -0.14, 0.16], hips: [8, 20, 0], spine: [26, 16, 0], shoulderR: [0, 16, -10], upperArmR: [-88, 0, 16], lowerArmR: [-10, 0, 0], upperArmL: [-80, 0, -16], lowerArmL: [-10, 0, 0], handL: [-50, 0, 0], handR: [-50, 0, 0] }, 'snap'),
+      k(['R', 0.5], { pos: [0, -0.1, 0.06], spine: [18, 0, 0], upperArmR: [-40, 0, -20], upperArmL: [-40, 0, 20], lowerArmL: [-50, 0, 0], lowerArmR: [-50, 0, 0] }),
+      k(['R', 1], { ...MB_STANCE }),
+    ],
+  },
+  land: {
+    mode: 'norm',
+    base: MB_STANCE,
+    blend: 1,
+    keys: [k(0, { pos: [0, -0.3, 0.04], sq: 0.86, spine: [34, 0, 0], upperLegL: [-60, 14, 12], lowerLegL: [96, 0, 0], upperLegR: [4, -14, -12], lowerLegR: [90, 0, 0] }), k(1, { ...MB_STANCE })],
+  },
+  lying: {
+    mode: 'norm',
+    base: { ...LYING, pos: [0, -1.05, -0.1] },
+    blend: 2,
+    keys: [k(0, {}), k(1, { head: [10, 20, 0] })],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// APEP
+// ---------------------------------------------------------------------------
+const FB_STANCE: PoseSpec = {
+  pos: [0, -0.05, 0],
+  hips: [0, -20, 0],
+  spine: [4, 4, 0],
+  chest: [2, 8, 0],
+  neck: [-4, 0, 0],
+  head: [-4, 6, 0],
+  shoulderL: [0, 0, 0],
+  shoulderR: [0, 0, 0],
+  upperArmL: [-34, 0, 22],
+  lowerArmL: [-52, 0, 0],
+  handL: [16, 0, 0],
+  upperArmR: [-12, 0, -26],
+  lowerArmR: [-70, 0, 0],
+  handR: [10, 0, 0],
+  upperLegL: [-22, 12, 4],
+  lowerLegL: [24, 0, 0],
+  footL: [-2, -6, 0],
+  upperLegR: [14, -10, -4],
+  lowerLegR: [14, 0, 0],
+  footR: [6, 8, 0],
+};
+
+export const APEP_CLIPS: Record<string, ClipSpec> = {
+  idle: {
+    mode: 'loop',
+    length: 100,
+    base: FB_STANCE,
+    blend: 8,
+    keys: [k(0, {}), k(0.5, { pos: [0, -0.065, 0], chest: [3, 12, 0], upperArmL: [-38, 0, 24], handL: [26, 0, 0], upperArmR: [-8, 0, -28], head: [-2, 2, 0] })],
+  },
+  walk: {
+    mode: 'stride',
+    length: 1.6,
+    base: FB_STANCE,
+    blend: 6,
+    keys: [
+      k(0, { pos: [0, -0.07, 0], upperLegL: [-30, 4, 2], lowerLegL: [12, 0, 0], footL: [-12, 0, 0], upperLegR: [22, -4, -2], lowerLegR: [20, 0, 0], footR: [16, 0, 0] }),
+      k(0.25, { pos: [0, -0.02, 0], upperLegL: [-4, 4, 2], lowerLegL: [6, 0, 0], footL: [0, 0, 0], upperLegR: [-20, -4, -2], lowerLegR: [64, 0, 0], footR: [18, 0, 0] }),
+      k(0.5, { pos: [0, -0.07, 0], upperLegR: [-30, -4, -2], lowerLegR: [12, 0, 0], footR: [-12, 0, 0], upperLegL: [22, 4, 2], lowerLegL: [20, 0, 0], footL: [16, 0, 0] }),
+      k(0.75, { pos: [0, -0.02, 0], upperLegR: [-4, -4, -2], lowerLegR: [6, 0, 0], footR: [0, 0, 0], upperLegL: [-20, 4, 2], lowerLegL: [64, 0, 0], footL: [18, 0, 0] }),
+    ],
+  },
+  fb_intro: {
+    mode: 'norm',
+    base: FB_STANCE,
+    blend: 1,
+    keys: [
+      k(0, { pos: [0, -0.5, 0], hips: [20, -10, 0], spine: [30, 0, 0], chest: [16, 0, 0], neck: [20, 0, 0], head: [20, 0, 0], upperLegL: [-90, 10, 4], lowerLegL: [110, 0, 0], upperLegR: [30, -10, -4], lowerLegR: [120, 0, 0], footR: [40, 0, 0], upperArmL: [-60, 0, -40], lowerArmL: [-90, 0, 0], upperArmR: [-60, 0, 40], lowerArmR: [-90, 0, 0] }),
+      k(0.22, {}),
+      k(0.42, { ...FB_STANCE, pos: [0, 0.0, 0], spine: [-6, 0, 0], chest: [-10, 0, 0], head: [-10, 0, 0], upperArmL: [-40, 0, 80], lowerArmL: [-10, 0, 0], upperArmR: [-40, 0, -80], lowerArmR: [-10, 0, 0] }),
+      k(0.55, { upperArmL: [-60, 0, 90], upperArmR: [-60, 0, -90], chest: [-14, 0, 0] }),
+      k(0.66, { pos: [0, -0.1, 0.04], chest: [6, 10, 0], upperArmL: [-90, 0, -40], lowerArmL: [-20, 0, 0], upperArmR: [-90, 0, 40], lowerArmR: [-20, 0, 0] }, 'snap'),
+      k(0.82, { chest: [4, 20, 0], upperArmR: [-88, 0, 10], lowerArmR: [-4, 0, 0], upperArmL: [-40, 0, 30], lowerArmL: [-60, 0, 0], head: [-6, -10, 0] }),
+      k(1, { ...FB_STANCE }),
+    ],
+  },
+  fb_combo_1: {
+    mode: 'move',
+    base: FB_STANCE,
+    blend: 3,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 0.85], { pos: [0, -0.06, -0.03], hips: [0, -40, 0], chest: [0, -30, 0], upperArmR: [-160, 0, -40], lowerArmR: [-40, 0, 0], handR: [20, 0, 0], head: [-6, 20, 0] }, 'out'),
+      k(['S', 1], { upperArmR: [-164, 0, -42] }, 'linear'),
+      k(['A', 0.5], { pos: [0, -0.1, 0.1], hips: [0, 8, 0], spine: [12, 8, 0], chest: [6, 26, 0], upperArmR: [-78, 0, 30], lowerArmR: [-6, 0, 0], handR: [-10, 0, 0] }, 'snap'),
+      k(['A', 1], { chest: [8, 32, 0], upperArmR: [-40, 0, 40] }, 'out'),
+      k(['R', 1], { ...FB_STANCE, pos: [0, -0.07, 0.05], chest: [4, 18, 0] }),
+    ],
+  },
+  fb_combo_2: {
+    mode: 'move',
+    base: { ...FB_STANCE, pos: [0, -0.07, 0.05], chest: [4, 18, 0] },
+    blend: 2,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 1], { hips: [0, 20, 0], chest: [0, 36, 0], upperArmL: [-90, 0, -50], lowerArmL: [-100, 0, 0] }, 'in'),
+      k(['A', 0.5], { pos: [0, -0.1, 0.12], hips: [0, -26, 0], chest: [4, -26, 0], upperArmL: [-95, 0, 40], lowerArmL: [-8, 0, 0] }, 'snap'),
+      k(['A', 1], { chest: [4, -34, 0], upperArmL: [-85, 0, 64] }, 'out'),
+      k(['R', 1], { ...FB_STANCE, pos: [0, -0.07, 0.05], hips: [0, -30, 0], chest: [2, -20, 0] }),
+    ],
+  },
+  fb_combo_3: {
+    mode: 'move',
+    base: { ...FB_STANCE, hips: [0, -30, 0], chest: [2, -20, 0] },
+    blend: 2,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 1], { pos: [0, -0.14, 0], hips: [6, -70, 0], spine: [10, -20, 0], chest: [6, -30, 0], upperArmL: [-60, 0, -40], lowerArmL: [-110, 0, 0], upperArmR: [-60, 0, 40], lowerArmR: [-110, 0, 0], head: [-6, 40, 0] }, 'in'),
+      k(['A', 0.3], { pos: [0, -0.1, 0.1], hips: [0, 20, 0], spine: [4, 20, 0], chest: [0, 30, 0], upperArmL: [-90, 0, 80], lowerArmL: [-4, 0, 0], upperArmR: [-90, 0, -80], lowerArmR: [-4, 0, 0], head: [-6, -10, 0] }, 'snap'),
+      k(['A', 1], { hips: [0, 70, 0], chest: [0, 40, 0], spine: [4, 30, 0] }, 'linear'),
+      k(['R', 0.3], { hips: [0, 80, 0], chest: [0, 44, 0], upperArmL: [-70, 0, 70], upperArmR: [-70, 0, -70] }, 'out'),
+      k(['R', 1], { ...FB_STANCE }),
+    ],
+  },
+  fb_leap: {
+    mode: 'move',
+    base: FB_STANCE,
+    blend: 3,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 0.9], { pos: [0, -0.3, -0.04], hips: [16, -20, 0], spine: [34, 0, 0], neck: [-24, 0, 0], upperLegL: [-70, 12, 4], lowerLegL: [110, 0, 0], upperLegR: [20, -10, -4], lowerLegR: [110, 0, 0], upperArmL: [30, 0, 40], lowerArmL: [-30, 0, 0], upperArmR: [30, 0, -40], lowerArmR: [-30, 0, 0] }, 'out'),
+      k(['A', 0.05], { pos: [0, 0.05, 0], sq: 1.08, hips: [-6, -10, 0], spine: [-8, 0, 0], neck: [-6, 0, 0], upperLegL: [-20, 4, 2], lowerLegL: [20, 0, 0], upperLegR: [20, -4, -2], lowerLegR: [20, 0, 0], footL: [40, 0, 0], footR: [40, 0, 0], upperArmL: [-170, 0, 20], lowerArmL: [-30, 0, 0], upperArmR: [-170, 0, -20], lowerArmR: [-30, 0, 0] }, 'snap'),
+      k(['A', 0.3], { pos: [0, 0.1, 0], sq: 1, spine: [-14, 0, 0], upperLegL: [-80, 4, 2], lowerLegL: [110, 0, 0], upperLegR: [-50, -4, -2], lowerLegR: [120, 0, 0], upperArmL: [-176, 0, 10], upperArmR: [-176, 0, -10] }),
+      k(['A', 0.4], { spine: [-18, 0, 0], upperArmL: [-178, 0, 8], upperArmR: [-178, 0, -8] }, 'linear'),
+      k(['A', 0.55], { pos: [0, 0.0, 0.08], spine: [40, 0, 0], chest: [16, 0, 0], upperLegL: [-60, 4, 2], lowerLegL: [60, 0, 0], upperLegR: [-10, -4, -2], lowerLegR: [60, 0, 0], upperArmL: [-40, 0, 16], lowerArmL: [-6, 0, 0], upperArmR: [-40, 0, -16], lowerArmR: [-6, 0, 0] }, 'snap'),
+      k(['A', 1], { pos: [0, -0.02, 0.08] }),
+    ],
+  },
+  land: {
+    mode: 'norm',
+    base: FB_STANCE,
+    blend: 1,
+    keys: [
+      k(0, { pos: [0, -0.4, 0.1], sq: 0.88, hips: [20, -10, 0], spine: [44, 0, 0], chest: [16, 0, 0], upperLegL: [-86, 12, 4], lowerLegL: [120, 0, 0], upperLegR: [30, -10, -4], lowerLegR: [120, 0, 0], footR: [40, 0, 0], upperArmL: [-36, 0, 16], lowerArmL: [-6, 0, 0], upperArmR: [-36, 0, -16], lowerArmR: [-6, 0, 0] }),
+      k(0.6, { pos: [0, -0.36, 0.08], sq: 1 }),
+      k(1, { ...FB_STANCE }),
+    ],
+  },
+  fb_backstep: {
+    mode: 'move',
+    base: FB_STANCE,
+    blend: 2,
+    keys: [
+      k(['R', 0], {}),
+      k(['R', 0.3], { pos: [0, 0.05, -0.05], spine: [-6, 0, 0], upperLegL: [-50, 12, 4], lowerLegL: [90, 0, 0], upperLegR: [-10, -10, -4], lowerLegR: [90, 0, 0], upperArmL: [-60, 0, 50], upperArmR: [-40, 0, -50] }, 'out'),
+      k(['R', 0.7], { pos: [0, -0.16, 0], spine: [16, 0, 0], upperLegL: [-40, 12, 4], lowerLegL: [60, 0, 0], upperLegR: [16, -10, -4], lowerLegR: [60, 0, 0] }, 'in'),
+      k(['R', 1], { ...FB_STANCE }),
+    ],
+  },
+  fb_counter: {
+    mode: 'move',
+    base: FB_STANCE,
+    blend: 1,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 1], { pos: [0, -0.16, 0], hips: [4, -80, 0], chest: [4, -30, 0], upperArmL: [-70, 0, -50], lowerArmL: [-100, 0, 0], upperArmR: [-70, 0, 50], lowerArmR: [-100, 0, 0] }, 'in'),
+      k(['A', 0.2], { pos: [0, -0.1, 0], hips: [0, 0, 0], chest: [0, 10, 0], upperArmL: [-90, 0, 86], lowerArmL: [-4, 0, 0], upperArmR: [-90, 0, -86], lowerArmR: [-4, 0, 0] }, 'snap'),
+      k(['A', 1], { hips: [0, 140, 0], chest: [0, 30, 0] }, 'linear'),
+      k(['R', 0.4], { hips: [0, 170, 0], chest: [0, 20, 0], upperArmL: [-60, 0, 60], upperArmR: [-60, 0, -60] }, 'out'),
+      k(['R', 1], { ...FB_STANCE, hips: [0, 340, 0] }),
+    ],
+  },
+  fb_power: {
+    mode: 'move',
+    base: FB_STANCE,
+    blend: 4,
+    keys: [
+      k(['R', 0], {}),
+      k(['R', 0.2], { pos: [0, -0.2, 0], spine: [30, 0, 0], chest: [20, 0, 0], head: [20, 0, 0], upperArmL: [-40, 0, -30], lowerArmL: [-110, 0, 0], upperArmR: [-40, 0, 30], lowerArmR: [-110, 0, 0] }, 'out'),
+      k(['R', 0.45], { pos: [0, 0.14, 0], hips: [-4, -10, 0], spine: [-10, 0, 0], chest: [-24, 0, 0], neck: [-14, 0, 0], head: [-30, 0, 0], upperArmL: [-60, 0, 100], lowerArmL: [-10, 0, 0], upperArmR: [-60, 0, -100], lowerArmR: [-10, 0, 0], upperLegL: [-10, 6, 4], lowerLegL: [30, 0, 0], upperLegR: [4, -6, -4], lowerLegR: [40, 0, 0], footL: [40, 0, 0], footR: [40, 0, 0] }, 'snap'),
+      k(['R', 0.75], { pos: [0, 0.16, 0], chest: [-26, 4, 0], head: [-32, 4, 0], upperArmL: [-64, 0, 104], upperArmR: [-64, 0, -104] }),
+      k(['R', 1], { ...FB_STANCE }),
+    ],
+  },
+  fb_dash: {
+    mode: 'move',
+    base: FB_STANCE,
+    blend: 3,
+    keys: [
+      k(['S', 0], {}),
+      k(['S', 0.7], { pos: [0, -0.3, -0.06], hips: [20, -10, 0], spine: [40, 0, 0], neck: [-30, 0, 0], head: [-10, 0, 0], upperLegL: [-80, 12, 4], lowerLegL: [110, 0, 0], upperLegR: [30, -10, -4], lowerLegR: [100, 0, 0], footR: [40, 0, 0], upperArmL: [40, 0, 30], lowerArmL: [-20, 0, 0], upperArmR: [40, 0, -30], lowerArmR: [-20, 0, 0] }, 'out'),
+      k(['S', 1], { pos: [0, -0.32, -0.08] }, 'linear'),
+      k(['A', 0.1], { pos: [0, -0.22, 0.12], hips: [26, 0, 0], spine: [44, 0, 0], neck: [-40, 0, 0], upperLegL: [-70, 12, 4], lowerLegL: [60, 0, 0], upperLegR: [50, -10, -4], lowerLegR: [40, 0, 0], footR: [50, 0, 0], upperArmL: [60, 0, 20], lowerArmL: [-10, 0, 0], upperArmR: [60, 0, -20], lowerArmR: [-10, 0, 0] }, 'snap'),
+      k(['A', 1], { pos: [0, -0.22, 0.12] }),
+      k(['R', 0.3], { pos: [0, -0.3, 0], hips: [10, 0, 0], spine: [20, 0, 0], neck: [-10, 0, 0], upperArmL: [-60, 0, 60], upperArmR: [-60, 0, -60], lowerArmL: [-40, 0, 0], lowerArmR: [-40, 0, 0], upperLegL: [-60, 12, 4], lowerLegL: [90, 0, 0], upperLegR: [20, -10, -4], lowerLegR: [80, 0, 0] }, 'out'),
+      k(['R', 1], { ...FB_STANCE }),
+    ],
+  },
+};
